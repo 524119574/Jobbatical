@@ -1,0 +1,27 @@
+{
+  "name": "jobbatical-clone",
+  "version": "1.0.0",
+  "description": "A project for Chingu-Voyage",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jobbatical-clone/jobbatical.git"
+  },
+  "author": "Leonard and Dhaval",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jobbatical-clone/jobbatical/issues"
+  },
+  "homepage": "https://github.com/jobbatical-clone/jobbatical#readme",
+  "dependencies": {
+    "express": "^4.15.3",
+    "mongodb": "^2.2.30"
+  },
+  "directories": {
+    "test": "test"
+  },
+  "devDependencies": {}
+}
