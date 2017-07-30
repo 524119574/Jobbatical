@@ -4,7 +4,7 @@
   "description": "A project for Chingu-Voyage",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha ./test/api.test.js"
   },
   "repository": {
     "type": "git",
@@ -26,6 +26,8 @@
     "test": "test"
   },
   "devDependencies": {
+    "mocha": "^3.4.2",
+    "should": "^11.2.1",
     "supertest": "^3.0.0"
   }
 }

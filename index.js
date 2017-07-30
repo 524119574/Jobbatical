@@ -5,4 +5,9 @@ mongoose.Promise = global.Promise;
 
 app.use('/api/v1', require('./routers/router.js'));
 
-app.listen(3000);
+if(!module.parent){ 
+    app.listen(3000); // avoid listening on the test suite
+}
+// app.listen(3000);
+
+module.exports = app;

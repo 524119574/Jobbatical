@@ -28,6 +28,7 @@ router.get('/jobs', function(req, res) {
 	Job.find({}, function(err, docs) {
 		if (err) {throw err}
 		console.log(docs);
+		console.log(Object.prototype.toString.call(docs));
 		res.send(docs);
 	})
 });
