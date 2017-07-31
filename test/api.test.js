@@ -3,7 +3,7 @@ var supertest = require('supertest');
 var request = supertest(app);
 var should = require('should');
 
-describe('index.js', function() {
+describe('routers/router.js', function() {
 	it('should be able to get all the jobs', function(done) {
 		request.get('/api/v1/jobs')
 			.end(function(err, res) {
@@ -28,5 +28,44 @@ describe('index.js', function() {
 					})
 			})
 		done();
-	})
+	});
+
+	describe('register function', function() {
+		it('should report an error when nothing is pass to it', function(done) {
+			request.post('/api/v1/register')
+				.end(function(err, res) {
+					// to be filled in
+				})
+		});
+
+		it('should report an error when missing email', function(done) {
+			// to be filled in
+		});
+
+		it('should report an error when missing password', function(done) {
+			// to be filled in
+		});
+
+		it('should report an error when password length is less than 8', function(done) {
+			// to be filled in
+		});
+
+		it('should report an error when passowrd length is greater than 100', function(done) {
+			// to be filled in
+		});
+
+		it('should check for invalid email in the payload', function(done) {
+			request.post('/api/v1/register')
+				.send({'email': 'askdfjlksdkjf.com'})
+				.end(function(err, res) {
+					res.body.length.should.not.be.equal(0);
+				})
+			done()
+		});
+
+		it('should report an error when email address is already on the database', function(done) {
+			// to be filled in
+		});
+
+	});
 })

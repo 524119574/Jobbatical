@@ -17,8 +17,10 @@
   },
   "homepage": "https://github.com/jobbatical-clone/jobbatical#readme",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.17.2",
     "express": "^4.15.3",
+    "jsonschema": "^1.1.1",
     "mongodb": "^2.2.30",
     "mongoose": "^4.11.4"
   },

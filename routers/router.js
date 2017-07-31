@@ -2,10 +2,13 @@ var router = require('express').Router();
 var mongodb = require('mongodb');
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser');
+var Validator = require('jsonschema').Validator;
 var connection = mongoose.connect('mongodb://localhost:27017/job', {
 	useMongoClient: true // this is important, if not it dosen't seem to save the document
 });
 var Job = mongoose.model('Job', require('../models/jobSchema.js'));
+var User = mongoose.model('User', require('../models/userSchema.js'));
+var createUser = require('../models/userSchema.js').createUser;
 
 var MongoClient = mongodb.MongoClient;
 
@@ -44,4 +47,60 @@ router.post('/job', function(req, res) {
 	    	console.log('saved!')
 	    });
 });
+
+router.post('/register', function(req, res) {
+	var validation = validateRegisterJson(req.body);
+	if (validation.errors.length === 0) {
+
+		User.findOne({'profile.email': req.body.email}, function(err, user) {
+			console.log(user);
+			if (!user) {
+				var newUser = new User({
+					profile: {
+						email: req.body.email,
+						password: req.body.password
+					}
+				});
+
+
+				createUser(newUser, function(err, user) {
+					if (err) {throw err}
+					console.log(user);
+					res.status(200);
+				})
+			}else {
+				console.log('email has been used');
+				res.send('email has been used.')
+			}
+		})
+
+	}else {
+		res.send(validation.errors);
+	}
+})
+
+function validateRegisterJson(json) {
+	console.log('success!!!')
+	var v = new Validator();
+	var registerSchema = {
+    	"id": "/registerJson",
+    	"type": "object",
+    	"properties": {
+       		"email": {
+         	"type": "string",
+         	"pattern": /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+         	"required": true
+       		},
+       		"password": {
+       			"type": "string",
+       			"minLength": 8,
+       			"maxLength": 100,
+	       		"required": true
+  	   		}
+    	}
+  	};
+  	console.log('validation result', v.validate(json, registerSchema).errors);
+  	return v.validate(json, registerSchema);
+}
+
 module.exports = router;
