@@ -15,7 +15,7 @@ module.exports.createUser = function(newUser, callback) {
 	var bcrypt = require('bcryptjs');
 	bcrypt.genSalt(10, function(err, salt) {
 	    bcrypt.hash(newUser.profile.password, salt, function(err, hash) {
-	    	newUser.profile.password = hash;
+	    	// newUser.profile.password = hash;
 	    	newUser.save(callback);
 	        // Store hash in your password DB. 
 	    });
@@ -23,11 +23,5 @@ module.exports.createUser = function(newUser, callback) {
 };
 
 module.exports.comparePassword = function(password, hash) {
-	bcrypt.compare(password, hash, function(err, res) {
-	if (!err) {
-		return res;
-	}else {
-		throw 'error in compare password';
-	}
-	});
+	return bcrypt.compareSync(password, hash);
 }

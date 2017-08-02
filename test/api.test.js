@@ -68,4 +68,18 @@ describe('routers/router.js', function() {
 		});
 
 	});
+
+	describe('login function', function() {
+		it('should logged in the user if the user profile is on the database', function() {
+
+		});
+
+		it('should report an error if the passoword is incorrect', function() {
+
+		})
+
+		it('should report an error if the email is not in the databse', function() {
+
+		});
+	});
 })

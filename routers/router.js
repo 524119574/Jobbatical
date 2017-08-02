@@ -1,6 +1,8 @@
 var router = require('express').Router();
 var mongodb = require('mongodb');
 var mongoose = require('mongoose');
+var passport = require('passport');
+var session = require('express-session');
 var bodyParser = require('body-parser');
 var Validator = require('jsonschema').Validator;
 var connection = mongoose.connect('mongodb://localhost:27017/job', {
@@ -9,6 +11,7 @@ var connection = mongoose.connect('mongodb://localhost:27017/job', {
 var Job = mongoose.model('Job', require('../models/jobSchema.js'));
 var User = mongoose.model('User', require('../models/userSchema.js'));
 var createUser = require('../models/userSchema.js').createUser;
+var comparePassword = require('../models/userSchema.js').comparePassword;
 
 var MongoClient = mongodb.MongoClient;
 
@@ -26,6 +29,7 @@ router.use(bodyParser.urlencoded({
  */
 router.use(bodyParser.json());
 
+require('./google-auth.js')(User, router);
 
 router.get('/jobs', function(req, res) {
 	Job.find({}, function(err, docs) {
@@ -79,8 +83,36 @@ router.post('/register', function(req, res) {
 	}
 })
 
+router.post('/login', function(req, res) {
+	var validation = validateRegisterJson(req.body);
+	if (validation.errors.length === 0) {
+		User.findOne({'profile.email': req.body.email}, function(err, user) {
+			console.log(user);
+			if (!user) {
+				res.send('no user found')
+			}else {
+				if (comparePassword(req.body.password, user.profile.password)) {
+					req.session.user = user;
+					res.send('logged in successfully');
+				}else {
+					res.send('incorrect passowrd');
+				}
+			}
+		})
+
+	}else {
+		res.send(validation.errors);
+	}
+});
+
+router.get('/profile', function(req, res) {
+	if(req.session.user) {
+		res.status(200).send('welcome to your profile');
+	}
+	res.status(401).send();
+});
+
 function validateRegisterJson(json) {
-	console.log('success!!!')
 	var v = new Validator();
 	var registerSchema = {
     	"id": "/registerJson",
