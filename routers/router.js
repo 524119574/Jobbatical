@@ -29,7 +29,9 @@ router.use(bodyParser.urlencoded({
  */
 router.use(bodyParser.json());
 
-require('./google-auth.js')(User, router);
+// require('./google-auth.js')(User, router);
+require('./github-auth.js')(User, router);
+require('./facebook-auth.js')(User, router);
 
 router.get('/jobs', function(req, res) {
 	Job.find({}, function(err, docs) {
